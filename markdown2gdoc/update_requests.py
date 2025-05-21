@@ -67,6 +67,7 @@ def get_codespan_text_style(start: int, end: int, font_family="Roboto Mono") -> 
     t_style = TextStyle(
         font_size=Dimension(magnitude=10, unit=Unit.PT),
         weighted_font_family=WeightedFontFamily(font_family=font_family),
+        foreground_color=OptionalColor(color=Color(rgb_color=RgbColor(red=0.24, green=0.5, blue=0.24))),
     )
     return Request(
         update_text_style=UpdateTextStyleRequest(
