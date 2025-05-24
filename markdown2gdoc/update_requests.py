@@ -67,7 +67,9 @@ def get_codespan_text_style(start: int, end: int, font_family="Roboto Mono") -> 
     t_style = TextStyle(
         font_size=Dimension(magnitude=10, unit=Unit.PT),
         weighted_font_family=WeightedFontFamily(font_family=font_family),
-        foreground_color=OptionalColor(color=Color(rgb_color=RgbColor(red=0.24, green=0.5, blue=0.24))),
+        foreground_color=OptionalColor(
+            color=Color(rgb_color=RgbColor(red=0.24, green=0.5, blue=0.24))
+        ),
     )
     return Request(
         update_text_style=UpdateTextStyleRequest(
@@ -94,6 +96,16 @@ def get_codeblock_text_style(
     )
 
 
+def get_specified_text_style(start: int, end: int, text_style: TextStyle) -> Request:
+    return Request(
+        update_text_style=UpdateTextStyleRequest(
+            range=Range(start_index=start, end_index=end),
+            text_style=text_style,
+            fields=utils.get_fields(text_style),
+        )
+    )
+
+
 def get_appropriate_inline_text_style(
     element: inline.InlineElement, start: int, end: int
 ) -> Optional[Request]:
@@ -107,6 +119,18 @@ def get_appropriate_inline_text_style(
         return get_codespan_text_style(start, end)
     else:
         return None
+
+
+def get_specified_paragraph_style(
+    start: int, end: int, paragraph_style: ParagraphStyle
+) -> Request:
+    return Request(
+        update_paragraph_style=UpdateParagraphStyleRequest(
+            range=Range(start_index=start, end_index=end),
+            paragraph_style=paragraph_style,
+            fields=utils.get_fields(paragraph_style),
+        )
+    )
 
 
 def get_quoto_paragraph_style(start: int, end: int) -> Request:
@@ -196,4 +220,20 @@ def get_code_block_paragraph_style(start: int, end: int) -> Request:
             paragraph_style=p_style,
             fields=utils.get_fields(p_style),
         )
+    )
+
+
+def get_list_paragraph_style(start: int, end: int, is_ordered: bool) -> Request:
+    return Request.model_validate(
+        {
+            "createParagraphBullets": {
+                "range": {
+                    "startIndex": start,
+                    "endIndex": end,
+                },
+                "bulletPreset": "NUMBERED_DECIMAL_ALPHA_ROMAN"
+                if is_ordered
+                else "BULLET_DISC_CIRCLE_SQUARE",
+            }
+        }
     )
