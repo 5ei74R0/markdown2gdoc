@@ -156,9 +156,10 @@ class MarkdownToGoogleDocsConverter:
         child_start_idx = start_idx
         for child in node.children:
             if isinstance(child, block.Paragraph):
+                # make a indentation for the paragraph
                 child_requests.append_text(
                     insert_text(child_start_idx, "\t" * indentation + " ")
-                )
+                )  # a following space is required for the tab to work properly
                 child_start_idx += indentation
                 tabs += indentation
             child_indentation = (
