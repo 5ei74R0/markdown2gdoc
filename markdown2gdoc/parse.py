@@ -84,7 +84,7 @@ def get_text_from_marko_element(element: inline.InlineElement) -> str:
 
 class MarkdownToGoogleDocsConverter:
     def __init__(self):
-        self.PRAGRAPH_STYLES: dict[int, google_docs.ParagraphStyle] = {
+        self.PARAGRAPH_STYLES: dict[int, google_docs.ParagraphStyle] = {
             1: DEFAULT_PARAGRAPH_STYLE_HEADING_1,
             2: DEFAULT_PARAGRAPH_STYLE_HEADING_2,
             3: DEFAULT_PARAGRAPH_STYLE_HEADING_3,
@@ -209,7 +209,7 @@ class MarkdownToGoogleDocsConverter:
         elif isinstance(node, block.Heading):
             requests.append_style(
                 get_specified_paragraph_style(
-                    pure_start, pure_end, self.PRAGRAPH_STYLES[node.level]
+                    pure_start, pure_end, self.PARAGRAPH_STYLES[node.level]
                 )
             )
             requests.append_style(
