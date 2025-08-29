@@ -14,8 +14,8 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "mypy>=1.14.1",
     "ruff>=0.11.10",
+    "ty>=0.0.1a19",
 ]
 
 [tool.uv.sources]
