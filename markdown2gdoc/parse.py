@@ -97,7 +97,7 @@ class MarkdownToGoogleDocsConverter:
             5: DEFAULT_PARAGRAPH_STYLE_HEADING_5,
             6: DEFAULT_PARAGRAPH_STYLE_HEADING_6,
         }
-        self.TEXT_STYLES: dict[int, google_docs.ParagraphStyle] = {
+        self.TEXT_STYLES: dict[int, google_docs.TextStyle] = {
             1: DEFAULT_TEXT_STYLE_HEADING_1,
             2: DEFAULT_TEXT_STYLE_HEADING_2,
             3: DEFAULT_TEXT_STYLE_HEADING_3,
