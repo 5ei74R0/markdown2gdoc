@@ -1,5 +1,5 @@
 import warnings
-from typing import NewType, Self
+from typing import NewType, Protocol, Self, runtime_checkable
 
 from marko import block, element, inline
 from marko import parse as md2ast
@@ -36,6 +36,11 @@ from .update_requests import (
 
 TabCount = NewType("TabCount", int)
 CurrentIndex = NewType("CurrentIndex", int)
+
+
+@runtime_checkable
+class HasChildren(Protocol):
+    children: list
 
 
 class Requests(BaseModel):
@@ -144,14 +149,14 @@ class MarkdownToGoogleDocsConverter:
                 start_idx + len(content),
                 tabs,
             )
-        if not hasattr(node, "children"):
+        if not isinstance(node, HasChildren):
             warnings.warn(
                 f"I don't validate this condition. {node} do not have children and it's not str."
             )
             return Requests(), start_idx, tabs
 
         # 1. insert all the texts in the node, update the current_idx, and collect child requests
-        assert hasattr(node, "children"), f"node {node} does not have children"
+        assert isinstance(node, HasChildren), f"node {node} does not have children"
         child_requests = Requests()
         child_start_idx = start_idx
         for child in node.children:
